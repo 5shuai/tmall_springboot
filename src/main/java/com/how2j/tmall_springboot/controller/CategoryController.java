@@ -18,7 +18,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping(value = "categories")
+    @GetMapping(value = "/categories")
     public List<Category> list() throws Exception {
         return categoryService.list();
     }

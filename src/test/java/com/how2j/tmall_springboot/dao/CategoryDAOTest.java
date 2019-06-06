@@ -1,6 +1,7 @@
 package com.how2j.tmall_springboot.dao;
 
 import com.how2j.tmall_springboot.pojo.Category;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,4 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CategoryDAOTest {
     @Autowired
     private CategoryDAO categoryDAO;
-
-    @Test
-    public void testCategoryDao() {
-        for (int i = 0; i < 10; i++) {
-            Category category = Category.builder()
-                    .name("fruit")
-                    .build();
-            categoryDAO.save(category);
-        }
-    }
 }
