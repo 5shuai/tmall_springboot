@@ -1,6 +1,8 @@
 package com.how2j.tmall_springboot.dao;
 
 import com.how2j.tmall_springboot.pojo.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -10,5 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface CategoryDAO extends JpaRepository<Category, Integer> {
-
+    @Override
+    Page<Category> findAll(Pageable pageable);
 }

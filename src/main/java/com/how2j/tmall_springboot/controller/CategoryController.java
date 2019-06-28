@@ -2,11 +2,11 @@ package com.how2j.tmall_springboot.controller;
 
 import com.how2j.tmall_springboot.pojo.Category;
 import com.how2j.tmall_springboot.service.CategoryService;
+import com.how2j.tmall_springboot.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author wuss.
@@ -19,8 +19,10 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping(value = "/categories")
-    public List<Category> list() throws Exception {
-        return categoryService.list();
+    public Page4Navigator<Category> list(@RequestParam(value = "start", defaultValue = "0") int start,
+                                         @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
+        start = start < 0 ? 0 : start;
+        return categoryService.list(start, size, 5);
     }
 }
 

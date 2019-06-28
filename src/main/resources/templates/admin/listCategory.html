@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="include/admin/adminHeader::html('分类管理')" ></head>
+<head th:include="include/admin/adminHeader::html('分类管理')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
-    $(function(){
+    $(function () {
         var data4Vue = {
-            uri:'categories',
+            uri: 'categories',
+            pagination: {},
             beans: []
         };
 
@@ -15,23 +16,31 @@
         var vue = new Vue({
             el: '#workingArea',
             data: data4Vue,
-            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
-                this.list();
+            mounted: function () { //mounted　表示这个 Vue 对象加载成功了
+
+                this.list(0);
             },
             methods: {
-                list:function(){
-                    var url =  this.uri;
-                    axios.get(url).then(function(response) {
-                        vue.beans = response.data;
+                list: function (start) {
+                    var url = this.uri + "?start=" + start;
+                    axios.get(url).then(function (response) {
+                        vue.pagination = response.data;
+                        vue.beans = response.data.content;
                     });
+                },
+                jump: function (page) {
+                    jump(page, vue);
+                },
+                jumpByNumber: function (start) {
+                    jumpByNumber(start, vue);
                 }
             }
         });
     });
 
 </script>
-<div id="workingArea" >
-    <h1 class="label label-info" >分类管理</h1>
+<div id="workingArea">
+    <h1 class="label label-info">分类管理</h1>
     <br>
     <br>
     <div class="listDataTableDiv">
@@ -51,28 +60,32 @@
             <tr v-for="bean in beans ">
                 <td>{{bean.id}}</td>
                 <td>
-                    <img height="40px"  :src="'img/category/'+bean.id+'.jpg'">
+                    <img height="40px" :src="'img/category/'+bean.id+'.jpg'">
                 </td>
                 <td>
                     {{bean.name}}
                 </td>
                 <td>
-                    <a :href="'admin_property_list?cid=' + bean.id "><span class="glyphicon glyphicon-th-list"></span></a>
+                    <a :href="'admin_property_list?cid=' + bean.id "><span
+                            class="glyphicon glyphicon-th-list"></span></a>
                 </td>
                 <td>
-                    <a :href="'admin_product_list?cid=' + bean.id "><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                    <a :href="'admin_product_list?cid=' + bean.id "><span
+                            class="glyphicon glyphicon-shopping-cart"></span></a>
                 </td>
                 <td>
                     <a :href="'admin_category_edit?id=' + bean.id "><span class="glyphicon glyphicon-edit"></span></a>
                 </td>
                 <td>
-                    <a href="#nowhere"  @click="deleteBean(bean.id)"><span class="   glyphicon glyphicon-trash"></span></a>
+                    <a href="#nowhere" @click="deleteBean(bean.id)"><span
+                            class="   glyphicon glyphicon-trash"></span></a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+    <div th:replace="include/admin/adminPage::html"></div>
 </div>
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>
