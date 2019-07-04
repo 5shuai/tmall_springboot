@@ -43,6 +43,7 @@ public class CategoryController {
     public void saveOrUpdateImageFile(Category bean, MultipartFile image, HttpServletRequest request) throws Exception {
         File imageFolder = new File(request.getServletContext().getRealPath("img/category"));
         File file = new File(imageFolder, bean.getId() + ".jpg");
+//        测试
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
