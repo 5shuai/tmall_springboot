@@ -34,4 +34,8 @@ public class CategoryService {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         return categoryDAO.findAll(sort);
     }
+
+    public void add(Category category){
+        categoryDAO.save(category);
+    }
 }

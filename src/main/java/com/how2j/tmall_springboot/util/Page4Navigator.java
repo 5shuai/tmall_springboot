@@ -22,7 +22,7 @@ public class Page4Navigator<T> {
     boolean last;
     boolean isHasNext;
     boolean isHasPrevious;
-    int[] navigatePageNums;
+    int[] navigatepageNums;
 
     public Page4Navigator() {
     }
@@ -45,38 +45,38 @@ public class Page4Navigator<T> {
     }
 
     private void calcNavigatepageNums() {
-        int navigatepageNums[];
+        int navigatepagenums[];
         int totalPages = getTotalPages();
         int num = getNumber();
 
         //当总页数小于或等于导航页码数时
         if (totalPages <= navigatePages) {
-            navigatepageNums = new int[totalPages];
+            navigatepagenums = new int[totalPages];
             for (int i = 0; i < totalPages; i++) {
-                navigatepageNums[i] = i + 1;
+                navigatepagenums[i] = i + 1;
             }
         } else {//当总页数大于导航页码数时
-            navigatepageNums = new int[navigatePages];
+            navigatepagenums = new int[navigatePages];
             int startNum = num - navigatePages / 2;
             int endNum = num + navigatePages / 2;
 
             if (startNum < 1) {
                 startNum = 1;
                 for (int i = 0; i < navigatePages; i++) {
-                    navigatepageNums[i] = startNum++;
+                    navigatepagenums[i] = startNum++;
                 }
             } else if (endNum > totalPages) {
                 endNum = totalPages;
                 for (int i = navigatePages - 1; i >= 0; i--) {
-                    navigatepageNums[i] = endNum--;
+                    navigatepagenums[i] = endNum--;
                 }
             } else {
                 for (int i = 0; i < navigatePages; i++) {
-                    navigatepageNums[i] = startNum++;
+                    navigatepagenums[i] = startNum++;
                 }
             }
         }
-        this.navigatePageNums = navigatepageNums;
+        this.navigatepageNums = navigatepagenums;
     }
 
     public Page<T> getPageFromJPA() {
@@ -175,12 +175,12 @@ public class Page4Navigator<T> {
         isHasPrevious = hasPrevious;
     }
 
-    public int[] getNavigatePageNums() {
-        return navigatePageNums;
+    public int[] getNavigatepageNums() {
+        return navigatepageNums;
     }
 
-    public void setNavigatePageNums(int[] navigatePageNums) {
-        this.navigatePageNums = navigatePageNums;
+    public void setNavigatepageNums(int[] navigatepageNums) {
+        this.navigatepageNums = navigatepageNums;
     }
 
     public int getTotalPages() {
