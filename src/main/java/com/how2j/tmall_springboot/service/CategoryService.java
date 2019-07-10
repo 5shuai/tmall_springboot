@@ -35,7 +35,19 @@ public class CategoryService {
         return categoryDAO.findAll(sort);
     }
 
-    public void add(Category category){
+    public void add(Category category) {
         categoryDAO.save(category);
+    }
+
+    public void delete(int id) {
+        categoryDAO.deleteById(id);
+    }
+
+    public Category get(int id) {
+        return categoryDAO.getOne(id);
+    }
+
+    public void update(Category bean) {
+        categoryDAO.save(bean);
     }
 }

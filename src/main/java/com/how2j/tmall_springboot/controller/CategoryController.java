@@ -5,10 +5,7 @@ import com.how2j.tmall_springboot.service.CategoryService;
 import com.how2j.tmall_springboot.util.ImageUtil;
 import com.how2j.tmall_springboot.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -40,16 +37,42 @@ public class CategoryController {
         return bean;
     }
 
+    @DeleteMapping(value = "/categories/{id}")
+    public String delete(@PathVariable("id") int id, HttpServletRequest request) throws Exception {
+        File imageFolder = new File(request.getServletContext().getRealPath("img/category"));
+        File file = new File(imageFolder, id + ".jpg");
+        if (file.exists()) {
+            file.delete();
+        }
+        categoryService.delete(id);
+        return null;
+    }
+
+    @GetMapping(value = "/categories/{id}")
+    public Category get(@PathVariable("id") int id) {
+        return categoryService.get(id);
+    }
+
     public void saveOrUpdateImageFile(Category bean, MultipartFile image, HttpServletRequest request) throws Exception {
         File imageFolder = new File(request.getServletContext().getRealPath("img/category"));
         File file = new File(imageFolder, bean.getId() + ".jpg");
-//        fjflawejfawlkefaw
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
         image.transferTo(file);
         BufferedImage img = ImageUtil.change2jpg(file);
         ImageIO.write(img, "jpg", file);
+    }
+
+    @PutMapping(value = "/categories/{id}")
+    public Object update(Category bean, MultipartFile image, HttpServletRequest request) throws Exception {
+        String name = request.getParameter("name");
+        bean.setName(name);
+        categoryService.update(bean);
+        if (image != null) {
+            saveOrUpdateImageFile(bean, image, request);
+        }
+        return bean;
     }
 }
 
