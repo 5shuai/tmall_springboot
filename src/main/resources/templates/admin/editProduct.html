@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html(产品管理)"></head>
+<body>
+<div th:replace="include/admin/adminNavigator::html"></div>
+<script>
+    $(function () {
+        var data4vue = {
+            uri: "products",
+            listURL: 'admin_product_list',
+            beans: [],
+            bean: {
+                id: 0,
+                name: '',
+                subTitle: '',
+                originalPrice: null,
+                promotePrice: null,
+                stock: null,
+                category: {id: 0}
+            },
+            pagination: {},
+            category: ''
+        };
+        var vue = new Vue({
+            data: data4vue,
+            el: '#workingArea',
+            mounted: function () {
+                this.get();
+            },
+            methods: {
+                get: function () {
+                    var id = getUrlParms("id");
+                    var url = "products/" + id;
+                    axios.get(url).then(function (response) {
+                        vue.bean = response.data;
+                        vue.category = vue.bean.category;
+                    })
+                },
+                update: function () {
+                    if (!checkEmpty(this.bean.name, "属性名称"))
+                        return;
+                    if (!checkEmpty(this.bean.subTitle, "属性名称"))
+                        return;
+                    if (!checkEmpty(this.bean.originalPrice, "原先价格"))
+                        return;
+                    if (!checkEmpty(this.bean.promotePrice, "优惠价格"))
+                        return;
+                    if (!checkEmpty(this.bean.stock, "库存"))
+                        return;
+                    var url = this.uri;
+
+                    axios.put(url, vue.bean).then(function () {
+                        location.href = vue.listURL + "?cid=" + vue.category.id;
+                    })
+                }
+            }
+        })
+    })
+</script>
+
+<div id="workingArea">
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有分类</a></li>
+        <li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">产品管理</li>
+    </ol>
+    <div class="panel panel-warning addDiv">
+        <div class="panel-heading">编辑产品</div>
+        <div class="panel-body">
+            <table class="addTable">
+                <tr>
+                    <td>产品名称</td>
+                    <td><input @keyup.enter="update" v-model.trim="bean.name" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>产品小标题</td>
+                    <td><input @keyup.enter="update" v-model.trim="bean.subTitle" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>产品名称</td>
+                    <td><input @keyup.enter="update" v-model.trim="bean.originalPrice" type="text" class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td>产品名称</td>
+                    <td><input @keyup.enter="update" v-model.trim="bean.promotePrice" type="text" class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td>产品名称</td>
+                    <td><input @keyup.enter="update" v-model.trim="bean.promotePrice" type="text" class="form-control">
+                    </td>
+                </tr>
+
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <input type="hidden" name="id" v-model.trim="bean.id">
+                        <a href="#nowhere" @click="update" class="btn btn-success">提交</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</body>
