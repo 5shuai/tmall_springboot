@@ -20,8 +20,8 @@ public class ProductController {
 
     @GetMapping(value = "/categories/{cid}/products")
     public Page4Navigator<Product> list(@PathVariable("cid") int cid,
-                                         @RequestParam(value = "start", defaultValue = "0") int start,
-                                         @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
+                                        @RequestParam(value = "start", defaultValue = "0") int start,
+                                        @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
         start = start < 0 ? 0 : start;
         return productService.list(cid, start, size, 5);
     }
