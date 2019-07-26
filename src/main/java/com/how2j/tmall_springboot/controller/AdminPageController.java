@@ -52,6 +52,6 @@ public class AdminPageController {
 
     @GetMapping(value = "/admin_productImage_list")
     public String listProductImages() {
-        return "admin/listProductImages";
+        return "admin/listProductImage";
     }
 }

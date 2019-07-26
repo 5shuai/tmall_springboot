@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html(属性管理)"></head>
+<body>
+<div th:replace="include/admin/adminNavigator::html"></div>
+<script>
+    $(function () {
+        var pid = getUrlParms("pid");
+        var data4vue = {
+            uri: "productImages",
+            bean: {id: 0, type: '', product: {id: 0}},
+            beans: [],
+            pagination: {},
+            product: {
+                id: 0,
+                name: '',
+                subTitle: '',
+                originalPrice: null,
+                promotePrice: null,
+                stock: null,
+                category: {id: 0,name:""}
+            },
+            category:''
+        };
+        var vue = new Vue({
+            data: data4vue,
+            el: "#workingArea",
+            mounted: function () {
+                // this.list("single");
+                this.getCategory(pid);
+            },
+            methods: {
+                list: function (type) {
+                    var url = "products/" + pid + "/productImages?type="+type;
+                    axios.get(url).then(function (response) {
+                        vue.pagination = response.data;
+                        vue.beans = data.content;
+                    })
+                },
+                getCategory:function (pid) {
+                    var url = "products/"+pid;
+                    axios.get(url).then(function (response) {
+                        vue.product = response.data;
+                        vue.category = vue.product.category;
+                    });
+                }
+            }
+        })
+    })
+</script>
+<div id="workingArea">
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有分类</a></li>
+        <li><a :href="'admin_property_list?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">产品图片管理</li>
+    </ol>
+</div>
+</body>

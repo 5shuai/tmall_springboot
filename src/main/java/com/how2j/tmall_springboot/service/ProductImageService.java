@@ -66,8 +66,32 @@ public class ProductImageService {
         return productImageDAO.getOne(id);
     }
 
-    public void delete(int id) {
+    public String delete(int id, HttpServletRequest request) {
+
+
+        ProductImage image = this.get(id);
         productImageDAO.deleteById(id);
+        File imageFolder;
+        if (image.getType().equals(TypeEnum.type_single.getType())) {
+            imageFolder = new File(request.getServletContext().getRealPath(FolderConstants.SINGLE_FOLDER));
+        } else {
+            imageFolder = new File(request.getServletContext().getRealPath(FolderConstants.DETAIL_FOLDER));
+        }
+
+        File file = new File(imageFolder, id + ".jpg");
+        String fileName = file.getName();
+        if (file.exists()) {
+            file.delete();
+        }
+        if (image.getType().equals(TypeEnum.type_single.getType())) {
+            String imageFolder_small = request.getServletContext().getRealPath(FolderConstants.IMAGE_FOLDER_SMALL);
+            String imageFolder_middle = request.getServletContext().getRealPath(FolderConstants.IMAGE_FOLDER_MIDDLE);
+            File f_small = new File(imageFolder_small, fileName);
+            File f_middle = new File(imageFolder_middle, fileName);
+            f_small.delete();
+            f_middle.delete();
+        }
+        return null;
     }
 
     public List<ProductImage> listSingleProductImages(Product product) {
@@ -78,10 +102,10 @@ public class ProductImageService {
         return productImageDAO.findByProductAndTypeOrderByIdDesc(product, TypeEnum.type_detail.getType());
     }
 
-    public void setFirstProductImage(Product product) {
-        List<ProductImage> singleImagelist = listSingleProductImages(product);
-        if (!singleImagelist.isEmpty()) {
-            product.setFirstProductImage(singleImagelist.get(0));
+    private void setFirstProductImage(Product product) {
+        List<ProductImage> singleImageList = listSingleProductImages(product);
+        if (!singleImageList.isEmpty()) {
+            product.setFirstProductImage(singleImageList.get(0));
         } else {
             product.setFirstProductImage(new ProductImage());
         }
