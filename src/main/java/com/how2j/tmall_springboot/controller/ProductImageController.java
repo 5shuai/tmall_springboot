@@ -37,8 +37,8 @@ public class ProductImageController {
     @PostMapping("/productImages")
     public Object add(@RequestParam(value = "pid") int pid,
                       @RequestParam(value = "type") String type,
-                      MultipartFile multipartFile, HttpServletRequest request) {
-        return productImageService.add(pid, type, multipartFile, request);
+                      MultipartFile image, HttpServletRequest request) {
+        return productImageService.add(pid, type, image, request);
     }
 
     @DeleteMapping(value = "/productImages/{id}")

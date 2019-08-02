@@ -49,8 +49,7 @@
                     axios.delete(url).then(function (response) {
                         if (0 !== response.data.length) {
                             alert(response.data)
-                        }
-                        else {
+                        } else {
                             vue.list(0)
                         }
                     })
@@ -119,7 +118,10 @@
             <tbody>
             <tr v-for="bean in beans ">
                 <td>{{bean.id}}</td>
-                <td>{{bean.id}}</td>
+                <td>
+                    <img v-if="null != bean.firstProductImage" width="40px"
+                         :src="'img/productSingle/'+bean.firstProductImage.id+'.jpg'">
+                </td>
                 <td>
                     {{bean.name}}
                 </td>

@@ -11,7 +11,7 @@
             pagination:{},
             beans: [],
             bean: {id: 0, name: ''},
-            file: null
+            singleFile: null
         };
 
         //ViewModel
@@ -33,18 +33,18 @@
                 add: function () {
                     if (!checkEmpty(this.bean.name, "分类名称"))
                         return;
-                    if (!checkEmpty(this.file, "分类图片"))
+                    if (!checkEmpty(this.singleFile, "分类图片"))
                         return;
                     var url = this.uri;
                     //axios.js上传文件要用formData的方法
                     var formData = new FormData;
-                    formData.append("image", this.file);
+                    formData.append("image", this.singleFile);
                     formData.append("name", this.bean.name);
                     axios.post(url, formData).then(function (response) {
                         vue.list(0);
                         vue.bean = {id: 0, name: ''};
                         $("#categoryPic").val('');
-                        vue.file = null;
+                        vue.singleFile = null;
                     })
                 },
 
@@ -114,7 +114,7 @@
                 </td>
                 <td>
                     <a href="#nowhere" @click="deleteBean(bean.id)"><span
-                            class="   glyphicon glyphicon-trash"></span></a>
+                            class="glyphicon glyphicon-trash"></span></a>
                 </td>
             </tr>
             </tbody>

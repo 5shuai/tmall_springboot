@@ -6,7 +6,7 @@
 <script>
     $(function () {
         var data4vue = {
-            file: '',
+            singleFile: '',
             bean: {id: 0, name: ''},
             uri: 'categories',
             listURL: 'admin_category_list'
@@ -31,14 +31,14 @@
                         return;
                     var url = this.uri + '/' + this.bean.id;
                     var formData = new FormData;
-                    formData.append("image",this.file);
+                    formData.append("image",this.singleFile);
                     formData.append("name",this.bean.name);
                     axios.put(url,formData).then(function (response) {
                         location.href = vue.listURL;
                     })
                 },
                 getFile:function (event) {
-                    vue.file = event.target.files[0];
+                    vue.singleFile = event.target.files[0];
                 }
             }
         })
